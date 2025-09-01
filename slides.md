@@ -5,7 +5,7 @@ info: |
 theme: seriph
 colorSchema: 'light'
 download: true
-background: 'images/Gemini_Generated_Image_WallE_Qui_Code.png'
+background: '/walle.png'
 lineNumbers: true
 ---
 
