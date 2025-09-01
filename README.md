@@ -5,3 +5,9 @@
 ```bash
 npm run dev
 ```
+
+## Générer site statique
+
+```bash
+npm run build
+```
