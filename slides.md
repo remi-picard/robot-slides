@@ -57,8 +57,6 @@ layout: center
 # Jour 1
 ## Découverte de Robot Framework
 
-<!-- TODO Fond d'écran -->
-
 ---
 
 ## Découverte de Robot Framework
@@ -84,7 +82,7 @@ layout: center
 - Langage
 - Open Source codé en Python
 - Fonctionnalités clefs en main (assertions, rapport de tests…)
-- Extensible via des librairies RobotFramework (HTTP, JSON, SQL, Kafka …)
+- Extensible via des librairies Robot Framework (HTTP, JSON, SQL, Kafka …)
 - Extensible via des librairies Python
 
 </v-clicks>
@@ -103,7 +101,7 @@ layout: center
 
 ```mermaid
 timeline
-2005 : Thèse sur le sujet
+2005 : Thèse (Pekka Klärck)
 2008 : v2
 : déployé chez Nokia
 : Open Source
@@ -127,6 +125,14 @@ timeline
 
 </v-clicks>
 
+---
+
+## Pyramide des tests
+### Tests End-To-End
+
+<img src="/images/pyramide_tests.jpg" class="m-auto" style="height: 300px"/>
+
+<span style="font-size: 0.5rem;">Source : https://blog.takima.fr/saffranchir-de-la-pyramide-des-tests/</span>
 
 ---
 layout: center
@@ -190,8 +196,6 @@ layout: center
 # Développer avec Python 🐍
 ## Rappels
 
-<!-- TODO Fond d'écran -->
-
 ---
 
 ## Types natifs
@@ -237,7 +241,7 @@ layout: center
 ---
 
 # Développer avec Robot Framework 🤖
-## Tests, Variables, Keyword, Python ...
+## Tests, Variables, Keyword, Python, Structure ...
 
 ---
 
@@ -260,7 +264,7 @@ layout: center
 
 ```text {1-2|4-|all}
 *** Settings ***
-Library    String
+Library     String
 
 *** Test Cases ***
 Mon Premier Test
@@ -291,7 +295,7 @@ Mon Premier Test
 ```text
 *** Test Cases ***
 Creation Variable
-    ${ma_variable}    Set Variable    42
+    ${ma_variable}    Set Variable    C3PO
     Log    ma_variable=${ma_variable}
 ```
 
@@ -315,7 +319,7 @@ variable_python = 42
 Variables    resources/mes_variables_python.py
 
 *** Test Cases ***
-Creer Variable
+Utiliser Variable Python
     Log    variable_python=${variable_python}
 ```
 
@@ -328,10 +332,10 @@ Creer Variable
 
 ```text {1-5|all}
 *** Variables ***
-${nombre}    42
-${chaine}    Ma chaîne de caractères
-@{tab}       1  2  3
-&{map}       clef1=valeur1  clef2=valeur2
+${nombre}       42
+${chaine}       Ma chaîne de caractères
+@{tab}          1    2    3
+&{map}          clef1=valeur1    clef2=valeur2
 
 *** Test Cases ***
 Teste Variables
@@ -422,22 +426,22 @@ Appel Keywords
 *** Keywords ***
 Keyword Avec Args
     [Arguments]    @{list}
-    FOR  ${i}  IN  @{list}
+    FOR    ${i}    IN    @{list}
         Log    i=${i}
     END
 
 Keyword Avec Kwargs
     [Arguments]    &{map}
-    FOR  ${k}  ${v}  IN  &{map}
+    FOR    ${k}    ${v}    IN    &{map}
         Log    key=${k}, value=${v}
     END
 
 *** Test Cases ***
 Appel Keywords
-    ${list}    Create List  1  2  3
+    ${list}    Create List    1    2    3
     Keyword Avec Args    ${list}
 
-    ${map}    Create Dictionary    cle1=valeur1  cle2=valeur2
+    ${map}    Create Dictionary    cle1=valeur1    cle2=valeur2
     Keyword Avec Kwargs    &{map}
 ```
 
@@ -460,9 +464,6 @@ Appel Keywords
 <img src="/images/RBF - Keyword Espaces.png">
 
 </v-click>
-
-
-<!-- TODO Lien vers doc RBF avec tableau -->
 
 ---
 
@@ -504,12 +505,6 @@ def mon_premier_keyword_avec_argument_et_return(name) -> int:
     return 42
 ```
 
-
-<!-- TODO Exemples à revoir -->
-<!-- TODO Slide Suite de tests -->
-<!-- TODO Schéma mermaid imbrications Keyword -->
-<!-- TODO Ajouter schéma (poupées rousses avec des robots) -->
-
 ---
 
 ## Test -> Keyword -> Keyword
@@ -534,6 +529,20 @@ graph TD
 - `*** Test Cases ***` : déclarations Tests
 - `*** Keywords ***` : déclarations Keywords
 - `*** Variables ***` : déclarations Variables
+
+</v-clicks>
+
+---
+
+## Structures
+
+<v-clicks>
+
+- boucle `FOR`
+- boucle `WHILE`
+- condition `IF` / `ELSE`
+- gestion erreur `TRY` / `EXCEPT`
+- [Control structures](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#control-structures)
 
 </v-clicks>
 
@@ -570,8 +579,7 @@ robot -t "Mon Test" tests
 ## Résultats
 ### log.html
 
-TODO Capture d'écran
-
+<img class="m-auto" src="/images/log_error.png" style="height: 400px" />
 
 ---
 layout: center
@@ -596,74 +604,140 @@ Tester les syntaxes
 
 ---
 
-## RequestsLibrary
+## Requests Library
+
+<v-clicks>
 
 - Tests d'API
 - Wrapper de la lib Python requests
 - [Documentation](https://docs.robotframework.org/docs/different_libraries/requests)
+- Manipulation JSON simple
+
+</v-clicks>
 
 ---
 
-## RequestsLibrary
+## Requests Library
 
-```text {1-2|-6|1-2,8-9|1-2,11-|all}
+```bash
+pip install robotframework-requests
+```
+
+---
+
+## Requests Library
+
+```text {1-2|-6|1-2,8-9|1-2,11-13|1-2,15-|all}
 *** Settings ***
-Library               RequestsLibrary
+Library     RequestsLibrary
 
 *** Test Cases ***
 Quick Get Request Test
-    ${response}=    GET  https://www.google.com
+    ${response}    GET    https://www.google.com
 
 Quick Get Request With Parameters Test
-    ${response}=    GET  https://www.google.com/search  params=query=ciao  expected_status=200
+    ${response}    GET    https://www.google.com/search    params=query=ciao    expected_status=200
 
 Quick Get A JSON Body Test
-    ${response}=    GET  https://jsonplaceholder.typicode.com/posts/1
-    Should Be Equal As Strings    1  ${response.json()}[id]
+    ${response}    GET    https://jsonplaceholder.typicode.com/posts/1
+    Should Be Equal As Strings    1    ${response.json()}[id]
+
+Create Booking
+    ${booking_dates}    Create Dictionary    checkin=2022-12-31    checkout=2023-01-01
+    ${body}    Create Dictionary
+    ...    firstname=Hans
+    ...    lastname=Gruber
+    ...    totalprice=200
+    ...    depositpaid=false
+    ...    bookingdates=${booking_dates}
+    ${response}    POST    url=https://restful-booker.herokuapp.com/booking    json=${body}
+    ${id}    Set Variable    ${response.json()}[bookingid]
 ```
 
 ---
 layout: center
 ---
 
-
 ## Codelab 💻
 
 [API Booker](https://remi-picard.github.io/robot-codelab/api-booker/)
 
+---
+
+## Browser Library
+
+<v-clicks>
+
+- Tests UI
+- Wrapper de [Playwright](https://playwright.dev/)
+- [Documentation](https://docs.robotframework.org/docs/different_libraries/browser)
+- [Keywords](https://marketsquare.github.io/robotframework-browser/Browser.html)
+- [Exemples / Comparaison](https://robotframework-browser.org/#examples)
+
+</v-clicks>
+
+---
+
+## Browser Library
+
+<v-clicks>
+
+- Rapide 🚀
+- Fiable ✅
+- Contrôle du navigateur 🧑‍✈️
+- Remplaçant de [Selenium Library](https://docs.robotframework.org/docs/different_libraries/selenium)
+
+</v-clicks>
+
+---
+
+## Browser Library
+
+```bash {1|2|3|all}
+# Installer Node https://nodejs.org/en/download/
+pip install robotframework-browser
+rfbrowser init
+```
+
+---
+
+## Browser Library
+
+```text {1-2|1-8|10-|all}
+*** Settings ***
+Library     Browser
+
+*** Test Cases ***
+Go To Playwright With Browser Library
+    New Page    https://playwright.dev/
+    Get Title    contains    Playwright
+    Take Screenshot
+    
+    Click    a >> "Get started"
+    Get Element States    h1 >> "Installation"    contains    visible
+    Take Screenshot
+```
 
 ---
 layout: center
 ---
 
+<img src="/images/browser.png" class="m-auto" style="height: 600px">
 
+---
+layout: center
+---
+
+## Codelab 💻
+
+[TODO MVC](https://remi-picard.github.io/robot-codelab/todo-mvc/)
+
+---
+layout: center
+---
 
 # Jour 2
 ## Bonnes pratiques et Industrialisation
-
-<!-- TODO Fond d'écran -->
-
-<!-- TODO Slide sur JSON -->
-<!-- TODO Slide sur Playwright -->
-<!-- TODO Slide sur listener -->
-<!-- TODO Ajouter video d'intro -->
-<!-- TODO Template Jinja -->
-<!-- TODO Test avec Fichiers -->
-<!-- TODO Pre Commit + Robotidy -->
-<!-- TODO Black -->
-<!-- TODO Toolkit -->
-<!-- TODO libtoc, libdoc, Documentation -->
-<!-- TODO Pyramide des tests -->
-<!-- TODO Tests quotidiens -->
-<!-- TODO Notifications GChat -->
-<!-- TODO API Python (Listener) -->
-<!-- TODO Terminal interactif -->
-<!-- TODO Revoir le plan, à simplifier, mettre en cohérence avec les titres des slides -->
-<!-- TODO Pyramide des tests -->
-<!-- TODO Tests quotidiens -->
-<!-- TODO Notifications GChat -->
-<!-- TODO API Python (Listener) -->
-<!-- TODO Terminal interactif -->
 
 ---
 
@@ -685,12 +759,10 @@ layout: center
 ## Organiser les tests et les ressources
 ### Structure standard d'un projet
 
-<!-- TODO Variable d'env (.env ou YAML) -->
-
 <v-clicks>
 
-- `tests/` : fichiers de tests (`.robot`).
-- `resources/` : keywords partagés, variables et librairies maison (`.resource`, `.py`).
+- `tests/` : fichiers de tests (`.robot`) et suite de tests
+- `resources/` : keywords partagés, variables et librairies maison (`.resource`, `.py`)
 
 </v-clicks>
 
@@ -702,6 +774,8 @@ layout: center
 mon-projet/
 ├── tests/
 │   └── cas_de_test.robot
+│   └── suite/
+│       └── autre_cas_de_test.robot
 ├── resources/
 │   └── keyword_communs.resource
 │   └── ma_librairie.py
@@ -718,6 +792,323 @@ mon-projet/
 </v-clicks>
 
 ---
+layout: center
+---
+
+# Syntaxes avancées 🖋️
+
+---
+
+## Test Template
+
+```text {10-|1-4,10-|1,5-|all}
+*** Test Cases ***
+Normal test case with embedded arguments
+    The result of 1 + 1 should be 2
+    The result of 1 + 2 should be 3
+
+Template with embedded arguments
+    [Template]    The result of ${calculation} should be ${expected}
+    1 + 1    2
+    1 + 2    3
+
+*** Keywords ***
+The result of ${calculation} should be ${expected}
+    ${result} =    Evaluate    ${calculation}
+    Should Be Equal As Strings    ${result}    ${expected}
+```
+
+- [Test Templates](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#test-templates)
+
+---
+
+## Behavior Driven Development (BDD)
+### Given-When-Then
+
+```text {7-|all}
+*** Test Cases ***
+Mon Test Bdd
+    Given Pré Requis
+    When Action
+    Then Verifications
+
+*** Keywords ***
+Pré Requis
+    Log    Pré Requis
+
+Action
+    Log    Action
+
+Verifications
+    Log    Verifications
+```
+
+[BDD](https://docs.robotframework.org/docs/testcase_styles/bdd)
+
+---
+layout: center
+---
+
+<img src="/images/bdd.png" class="m-auto" style="height: 300px">
+
+---
+layout: center
+---
+
+# Utiliser les librairies standards 🪛
+
+---
+
+## Standard Library
+
+<v-clicks>
+
+- Inclus avec Robot Framework Core
+- BuiltIn (importé automatiquement)
+- String
+- Collections
+- DateTime
+- [OperatingSystem](https://robotframework.org/robotframework/latest/libraries/OperatingSystem.html)
+- Screenshot
+- Process
+- XML
+- [Standard Library](https://docs.robotframework.org/docs/different_libraries/standard)
+
+</v-clicks>
+
+---
+
+## Standard Library
+### Import
+
+```text
+*** Settings ***
+Library  Collections
+Library  OperatingSystem
+Library  Process
+Library  String
+```
+
+---
+
+## BuiltIn
+
+```text {1-8|1-2,10-|all}
+*** Test Cases ***
+Some Assertions
+    ${var}=    Set Variable    1.0
+    Should Not Be Equal    1    ${var}
+    Should Be Equal As Numbers    1    ${var}
+    Should Be Equal As Strings    1.0    ${var}
+    Should Be True    ${var} == 1.0
+    Should Not Be True    ${var} > 10
+
+    ${string}=    Set Variable    My String
+    Should Start With    ${string}    My
+    Length Should Be    ${string}    9
+```
+
+---
+layout: center
+---
+
+# Gestion des fichiers 🗂️
+
+---
+
+## Fichier Template
+
+- [Templates Jinja2](https://blog.stephane-robert.info/docs/developper/programmation/python/jinja/)
+- Création contenu de fichiers
+- Couplé à `OperatingSystem`
+
+---
+
+## Fichier Template
+
+<v-clicks>
+
+<section>
+
+- Template Jinja2 `templates/mon_template.csv.j2`
+
+```csv
+entete1;entete2
+{%- for d in data %}
+CONSTANTE;{{ d.variable }}
+{%- endfor %}
+```
+
+</section>
+
+
+<section>
+
+- Utilisation dans Keyword Python
+
+```python
+from jinja2 import Environment, FileSystemLoader
+
+# Initialiser l'environnement avec un dossier de templates
+env = Environment(loader=FileSystemLoader("templates"))
+template = env.get_template("mon_template.csv.j2")
+
+
+def charger_template(data):
+    contenu = template.render(data=data)
+    return contenu
+```
+</section>
+
+</v-clicks>
+
+---
+
+## Fichier Template
+
+<section>
+
+- Utilisation dans Robot Framework
+
+```text {1-3,12-|4-11|all}
+*** Settings ***
+Library     OperatingSystem
+Library     resources/file_helper.py
+
+*** Test Cases ***
+Creer Fichier Avec Un Template
+    ${ligne1}    Create Dictionary    variable=Ligne 1
+    ${ligne2}    Create Dictionary    variable=Ligne 2
+    ${data}    Create List    ${ligne1}    ${ligne2}
+    Creer Fichier    data/output/mon_fichier.csv    ${data}
+
+*** Keywords ***
+Creer Fichier
+    [Arguments]    ${path}    ${data}
+    ${contenu}    Charger Template    ${data}
+    ${fichier}    Create File    ${path}    ${contenu}
+    ${contenu}    Get File    ${path}
+    Log    ${contenu}
+```
+</section>
+
+---
+
+## Fichier Template
+
+```csv
+entete1;entete2
+CONSTANTE;Ligne 1
+CONSTANTE;Ligne 2
+```
+
+---
+layout: center
+---
+
+## Codelab 💻 Fichiers
+
+<!-- TODO codelab Fichier -->
+
+---
+layout: center
+---
+
+# Autres Librairies / Outils 🛠️
+
+---
+
+## Autres Librairies
+
+<v-clicks>
+
+- Requests Library
+- Browser Library
+- [Database](https://marketsquare.github.io/Robotframework-Database-Library/)
+- [JSON](https://robotframework-thailand.github.io/robotframework-jsonlibrary/JSONLibrary.html)
+- [Kafka](https://robooo.github.io/robotframework-ConfluentKafkaLibrary/)
+- [DataDriver](https://docs.robotframework.org/docs/testcase_styles/datadriven)
+
+</v-clicks>
+
+
+
+<!-- TODO Ajouter video d'intro -->
+<!-- TODO codelab Robot Flower Princess (Tester chez Nickel le docker pull) -->
+---
+
+## DataDriver
+
+- JSON, CSV ou Excel => Données de tests
+- `pip install robotframework-datadriver`
+
+---
+
+## PaBot
+
+<v-clicks>
+
+- Lancement des tests en parallèle 🚀
+- ⚠️ Isolation des tests
+- CLI `pabot` wrapper de `robot` (même options)
+- `pip install robotframework-pabot`
+- [PaBot](https://docs.robotframework.org/docs/parallel)
+
+</v-clicks>
+
+---
+
+## MockServer
+
+<v-clicks>
+
+- L'API à tester a besoin d'un service externe
+- Le service externe n'est pas disponible sur l'env de test
+- MockServer remplace le service externe
+- MockServer configurable par API
+
+</v-clicks>
+
+---
+
+## MockServer
+### API dépend de API Externe
+
+```mermaid { mirrorActors: false }
+sequenceDiagram
+    participant Client
+    participant API
+    participant API Externe
+    Client->>+API: 1.Appel
+    API->>+API Externe: 2.Appel API Externe
+    API->>-Client: 3.Réponse
+```
+
+---
+
+## MockServer
+### Flow de TEST
+
+```mermaid { mirrorActors: false }
+sequenceDiagram
+    participant Robot
+    participant API
+    participant MockServer
+    participant API Externe
+    API->>+API: 1.Configuration URL API Externe vers MockServer
+    Robot->>+MockServer: 2.Ajout Mock pour API Externe
+    Robot->>+API: 3.Test
+    API->>+MockServer: 4.Appel API Externe (Mock)
+    API->>-Robot: 5.Réponse
+```
+
+---
+layout: center
+---
+
+# Ligne de commande 🕹️
+
+---
 
 ## Ligne de commande `robot`
 
@@ -727,11 +1118,13 @@ robot --dryrun tests
 
 # Ajoute le répertoire courant dans le PYTHON PATH
 robot --pythonpath . tests
+
+robot --loglevel TRACE . tests
 ```
 
 ---
 
-## PYTHON PATH
+## PYTHON_PATH
 
 <v-clicks>
 
@@ -752,7 +1145,7 @@ Tester Ma Lib
 
 <section>
 
-Avec `--pythonpath .` :
+Avec `--pythonpath .` ou `-P .` :
 
 ```text
 *** Settings ***
@@ -769,30 +1162,133 @@ Tester Ma Lib
 
 ---
 
-## Librairies standards
-### Boîte à outils intégrée
-
-<!-- TODO A compléter -->
-<!-- TODO Ajouter slides autres librairies -->
+## API Python
 
 <v-clicks>
 
-- **`BuiltIn`** : incontournables (`Log`, `Set Variable`, `Run Keyword If`, `Sleep`...)
-- **`String`** : chaînes de caractères
-- **`Collections`** : listes et dictionnaires
+- réflexion Tests / Keywords (métadonnées, hooks)
+- parsing des résultats en Python
 
 </v-clicks>
 
 ---
 
-## Écrire des tests robustes
-### Gérer l'asynchronisme
+## Listener
 
 <v-clicks>
 
-- **Problème** : Les éléments d'une page web n'apparaissent pas instantanément.
-- **Anti-pattern** : `Sleep` -> attente fixe, fragile et qui ralentit les tests.
-- **Solution** : `Wait Until Keyword Succeeds` -> boucle d'attente intelligente.
+- `--listener`
+- API Python 🔗
+
+</v-clicks>
+
+---
+layout: center
+---
+
+# Bonnes pratiques 🥷
+
+---
+
+## Composition de Keywords
+
+<v-clicks>
+
+- 
+
+</v-clicks>
+
+
+---
+
+## Nommage / Découpage
+
+<v-clicks>
+
+- Rester générique
+- Factoriser
+- Donner des noms métier si possible
+
+</v-clicks>
+
+---
+
+## Documenter
+
+<v-clicks>
+
+- Bon nommage peut être suffisant 
+- Documenter les passages importants (non triviaux)
+
+</v-clicks>
+
+---
+
+## Structures avancées
+
+<v-clicks>
+
+- Tuple
+- class
+- dataclass (immutable)
+- list-comprehension
+
+</v-clicks>
+
+---
+
+## Variable d'env
+
+<v-clicks>
+
+- configuration YAML
+- `.env` avec `dotenv`
+
+</v-clicks>
+
+---
+
+## Lire la documentation
+
+<v-clicks>
+
+- Keyword
+
+</v-clicks>
+
+---
+
+## Formatteurs de code
+
+<v-clicks>
+
+- Robotidy : Robot
+- Black : Python
+- Pre Commit (avant chaque commit Git)
+
+</v-clicks>
+
+---
+
+## Terminal interactif
+
+<v-clicks>
+
+- alias
+- fzf
+- Listener
+
+</v-clicks>
+
+---
+
+## Gérer l'asynchronisme
+
+<v-clicks>
+
+- Pas de `Sleep` (attente fixe fragile et qui ralentit les tests)
+- Utiliser boucle d'attente `Wait Until Keyword Succeeds`
+- Utiliser les bons outils (`Playwright` attend par design)
 
 </v-clicks>
 
@@ -802,49 +1298,405 @@ Tester Ma Lib
 
 ```text
 *** Test Cases ***
-Attendre un élément
-    Wait Until Keyword Succeeds    10s    1s    Page Should Contain    Bienvenue
+Attendre Creation Fichier
+    Démarrer Batch
+    Wait Until Keyword Succeeds    2x    1s    File Should Exist    path=output.txt
+    ${fichier}    Get File    path=output.txt
+    # ... Assertion sur le fichier
+
+*** Keywords ***
+Démarrer Batch
+    Log    Start Batch
 ```
 
 </v-click>
 
-<!-- TODO Playwright (attente by design) -->
+---
+layout: center
+---
+
+<img src="/images/wait_until.png" class="m-auto" style="height: 400px">
 
 ---
 
-## Outils autour de Robot Framework
+## Gérer les erreurs
 
-<!-- TODO MockServer -->
-<!-- TODO A compléter -->
-<!-- TODO Usages (création de données, prototype, tests manuels) -->
+- Tenter des retry avec `Wait Until Keyword Succeeds`
+- Gérer les erreurs avec [TRY/EXCEPT](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#try-except-syntax)
+- `Fail` un test si nécessaire
+- `Log`
+
+---
+layout: center
+---
+
+# Rendre plus lisible le rapport HTML
+
+---
+
+## Suite
 
 <v-clicks>
 
-- **`RequestsLibrary`** : Tests d'API REST.
-- **`JSON`**
+- Chaque fichier robot est une suite
+- Le dossier exécuté est une suite
+- Tous les dossiers enfants sont des suites
+- Stats par suite
 
 </v-clicks>
 
+---
+
+## Tag
+
+- Les tests peuvent être taggués
+- Stats par tags
+- Options CLI `--include` / `--exclude` pour filtrer
+
+---
+
+## Log
+
+- Ne pas TROP logguer
+
+---
+
+## loglevel
+
+- `--loglevel TRACE` est intéressant en local
+
+---
+
+## rebot
+
+- Filtre les rapports `output.xml`
+- Avec arguments `--flattenkeywords`, `--removekeywords`
+
+---
+
+## Structure GROUP
+
+```text
+*** Test Cases ***
+Mon Test Avec Groupes
+    GROUP    Groupement de 2 Keywords
+        Premier Keyword
+        Deuxieme Keyword
+    END
+    Troisieme Keyword
+    Quatrieme Keyword
+
+*** Keywords ***
+Premier Keyword
+    Log    Keyword1
+
+Deuxieme Keyword
+    Log    Keyword2
+
+Troisieme Keyword
+    Log    Keyword3
+
+Quatrieme Keyword
+    GROUP    Groupe dans un Keyword
+        Log    Keyword4
+        Log    Keyword4bis
+    END
+```
+
+---
+
+## GROUP
+
+<img src="/images/group.png" class="m-auto" style="height: 400px"/>
+
+---
+layout: center
+---
+
+# Intégration continue 👾️
+
+<!-- TODO https://docs.robotframework.org/docs/using_rf_in_ci_systems/docker -->
+<!-- TODO https://docs.robotframework.org/docs/using_rf_in_ci_systems/ci -->
+<!-- TODO Démo sur Github Actions (projet robot-examples) -->
+
+---
+
+## Robotdiff
+
+<v-clicks>
+
+<img src="/images/diff.png" class="m-auto" style="height: 250px">
+
+[Robotdiff](https://robotframework.org/robotframework/2.1.2/tools/robotdiff.html)
+
+</v-clicks>
+
+---
+
+## Notifications
+### GChat / Slack
+
+<v-clicks>
+
+- Notifier **SI erreurs en +** par rapport à la veille
+
+<img src="/images/notif.png" class="m-auto" style="height: 200px">
+
+</v-clicks>
 
 ---
 
 ## Intégration continue
 
-<!-- TODO A compléter -->
-<!-- TODO robotdiff -->
-<!-- TODO Tasks / RPA -->
-<!-- TODO rebot -->
-<!-- TODO Gitlab CI VS Déploiement dans k8s -->
-<!-- TODO Browser Library -->
-<!-- TODO Lire la documentation -->
+<v-clicks>
+
+- A chaque `push`
+- Ne pas lancer les tests
+- Exécuter dry-run
+
+</v-clicks>
+
+---
+
+## Tests quotidiens
 
 <v-clicks>
 
-- **Principe** : Exécuter les tests automatiquement à chaque `push` sur le dépôt Git
-- **Exemple avec Gitlab CI** : Un fichier `.gitlab-ci.yml` qui lance la commande `robot`
-- **Artefacts** : Publier les rapports HTML pour chaque pipeline
+- Chaque nuit
+- Publier les rapports HTML
+- Effectuer un diff avec jours passés
+- Notifier équipe
 
 </v-clicks>
+
+---
+
+## Lancement Tests
+### CI
+
+- 🟢 Standard
+- 🔴 Ouvertures de flux (https, bases, sftp...)
+- 🔴 Publier les reports
+- 🟠 https
+
+<!-- TODO https://docs.robotframework.org/docs/reporting_test_results/report_portal -->
+<!-- TODO https://docs.robotframework.org/docs/reporting_test_results/allure -->
+<!-- TODO https://docs.robotframework.org/docs/reporting_test_results/grafana -->
+<!-- TODO https://docs.robotframework.org/docs/reporting_test_results/robot_framework_metrics -->
+<!-- TODO https://docs.robotframework.org/docs/reporting_test_results/robot_framework_dashboard -->
+
+---
+
+## Lancement Tests
+### K8S / API
+
+<img src="/images/k8s.png" class="m-auto" style="height: 300px">
+
+---
+
+## Lancement Tests
+### K8S / API
+
+- 🟢 File System Commun (input / output des apps, + report)
+- 🟢 Lancement unitaire
+- 🟢 http
+
+---
+layout: center
+---
+
+# Autres Usages 👩🏻‍💻
+
+---
+
+## Robotic Process Automation (RPA)
+
+> Robotic Process Automation (RPA) **is similar to test automation on the technical level**,
+> but the mentality is different on the business and results side.
+> In RPA, it is pretty standard that you are not running on a machine you control entirely,
+> so your robot needs to be "self-sufficient" and isolated.
+> Also, instead of finding and documenting places where robot execution fails or succeeds,
+> **the aim is always to succeed and get the result of the process**.
+
+<v-clicks>
+
+- `*** Test Cases ***` => `*** Tasks ***`
+- [Librairies RPA (Desktop, Cloud, Scrapping...)](https://github.com/robocorp/rpaframework/?tab=readme-ov-file#libraries)
+
+</v-clicks>
+
+
+---
+
+## Usage Développeur
+
+<v-clicks>
+
+- Création de jeu données
+- Tests semi-manuels
+- Démo
+
+</v-clicks>
+
+
+---
+layout: center
+---
+
+# Collaborer 🛗
+
+---
+
+## Toolkit
+### Partager une partie du code
+
+<v-clicks>
+
+- Keywords
+- Helpers
+
+</v-clicks>
+
+---
+
+## Portail Documentaire
+
+<v-clicks>
+
+- libtoc
+- libdoc
+
+</v-clicks>
+
+---
+layout: center
+---
+
+# Récap 🤯
+
+---
+
+## Keywords / Phrases
+
+```mermaid
+mindmap
+  root((Robot<br/>Framework))
+    Phrases
+      Test Cases
+          Keywords
+            Keywords
+              Python
+            Python
+      Keywords
+```
+
+---
+
+## Structure projet
+
+```mermaid
+mindmap
+  root((Robot<br/>Framework))
+    tests/
+        suite/
+            *.robot
+        *.robot
+    resources/
+        *.resources
+        *.py
+    requirements.txt
+```
+
+---
+
+## Librairies Core
+
+```mermaid
+mindmap
+  root((Robot<br/>Framework))
+    BuiltIn
+    String
+    Collections
+    DateTime
+    OperatingSystem
+    Screenshot
+    XML
+```
+
+---
+
+## Librairies
+
+```mermaid
+mindmap
+  root((Robot<br/>Framework))
+    Requests
+        requests
+            Test API
+    Browser
+        Playwright
+            Test UI
+    Database
+    JSON
+    Kafka
+```
+
+---
+
+## Ecosystème
+
+```mermaid
+mindmap
+  root((Robot<br/>Framework))
+    CLI robot
+        Reports
+    API Python
+    Docker
+    IDE
+    IA
+    Communauté
+    Python
+    MockServer
+```
+
+---
+
+## Bonnes pratiques
+
+```mermaid
+mindmap
+  root((Robot<br/>Framework))
+    Collaborer
+      Git
+      Documentation
+      Toolkit
+    Formatteur de code
+    Keywords
+        *args / **kwargs
+        Templates Test
+    Templates Jinja
+```
+
+---
+
+## test-automation VS RPA
+
+```mermaid
+mindmap
+  root((Robot<br/>Framework))
+    test-automation
+        Test Cases
+    RPA <br/> Automatisation
+        Tasks
+```
+
+---
+layout: center
+---
+
+# Rétro 🛋️
+
+TODO Klaxoon ?
 
 ---
 layout: center
