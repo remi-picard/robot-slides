@@ -1,7 +1,6 @@
 ---
-title: "Développer des tests d'intégrations avec Robot Framework"
-info: |
-  Formation pour développeurs sur 2 jours.
+title: "Développer avec Robot Framework"
+info: Formation Robot Framework pour les développeurs
 theme: seriph
 colorSchema: 'light'
 download: true
@@ -290,6 +289,32 @@ Mon Premier Test
 ---
 
 ## Variables
+### Section Variables
+
+<v-clicks>
+
+```text {1-5|all}
+*** Variables ***
+${nombre}       42
+${chaine}       Ma chaîne de caractères
+@{tab}          1    2    3
+&{map}          clef1=valeur1    clef2=valeur2
+
+*** Test Cases ***
+Teste Variables
+    Log    nombre=${nombre}
+    Log    chaine=${chaine}
+    Log    tab=${tab}
+    Log    map=${map}
+```
+
+[Variables](https://docs.robotframework.org/docs/variables)
+
+</v-clicks>
+
+---
+
+## Variables
 ### Déclaration
 
 ```text
@@ -302,11 +327,37 @@ Creation Variable
 ---
 
 ## Variables
-### Import
+### Portée
+
+<v-clicks>
+
+- Local `Set Variable`
+- Test `Set Test Variable`
+- Suite `Set Suite Variable`
+- Global `Set Global Variable`
+- 💡Limiter au maximum la portée
+
+</v-clicks>
+
+---
+
+## Variables
+### Import YAML
+
+<v-clicks>
+
+- option `--variablefile` / `-V`
+- `robot --variablefile conf/local.yaml tests/14-variablefile.robot`
+
+</v-clicks>
+
+---
+
+## Variables
+### Import Python
 
 ```python
 # resources/mes_variables_python.py
-
 variable_python = 42
 ```
 
@@ -328,22 +379,11 @@ Utiliser Variable Python
 ---
 
 ## Variables
-### Section Variables
+### ENV
 
-```text {1-5|all}
-*** Variables ***
-${nombre}       42
-${chaine}       Ma chaîne de caractères
-@{tab}          1    2    3
-&{map}          clef1=valeur1    clef2=valeur2
+- Syntaxe `%{VARIABLE_ENV=default_value}`
 
-*** Test Cases ***
-Teste Variables
-    Log    nombre=${nombre}
-    Log    chaine=${chaine}
-    Log    tab=${tab}
-    Log    map=${map}
-```
+<!-- Before / After -->
 
 ---
 
@@ -499,7 +539,7 @@ Mon Deuxième Keyword
 def mon_premier_keyword():
     print("Hello World")
     
-# Mon Premier Keyword Avec Argument Et Return    ${name}
+# ${retour}=    Mon Premier Keyword Avec Argument Et Return    ${name}
 def mon_premier_keyword_avec_argument_et_return(name) -> int:
     print(name)
     return 42
@@ -514,9 +554,9 @@ def mon_premier_keyword_avec_argument_et_return(name) -> int:
 ```mermaid
 graph TD
     A["Test Case: Mon Test (.robot)"] --> B("Keyword: Mon Premier Keyword")
-    B --> C("Keyword Python: mon_premier_keyword")
+    B --> C("Keyword Python 🐍: mon_premier_keyword")
     A --> D("Keyword: Un Autre Keyword")
-    D --> E("Keyword (BuiltIn): Log")
+    D --> E("Keyword 🤖(BuiltIn): Log")
 ```
 
 ---
@@ -566,7 +606,6 @@ robot -t "Mon Test" tests
 
 <v-clicks>
 
-- `report.html` : synthèse
 - `log.html` : détails par tests et keywords
   - 🔴 ERROR => automatiquement affiché (avec focus sur le keyword en erreur)
   - 🟢 SUCCESS
@@ -598,9 +637,9 @@ layout: center
 
 Tester les syntaxes
 
-- Keyword
-- Test
-- Variable
+- Keywords
+- Tests
+- Variables
 
 ---
 
@@ -693,9 +732,12 @@ layout: center
 
 ## Browser Library
 
-```bash {1|2|3|all}
+```bash {1|3|5-6|8-9|all}
 # Installer Node https://nodejs.org/en/download/
+
 pip install robotframework-browser
+
+# Télécharge le navigateur
 rfbrowser init
 ```
 
@@ -703,12 +745,15 @@ rfbrowser init
 
 ## Browser Library
 
-```text {1-2|1-8|10-|all}
+```text {1-2|1-5|1-7|1-11|all}
 *** Settings ***
 Library     Browser
 
 *** Test Cases ***
 Go To Playwright With Browser Library
+    # Opens a new browser instance. Use this keyword for quick experiments or debugging sessions.
+    Open Browser
+    
     New Page    https://playwright.dev/
     Get Title    contains    Playwright
     Take Screenshot
@@ -723,6 +768,9 @@ layout: center
 ---
 
 <img src="/images/browser.png" class="m-auto" style="height: 600px">
+
+<!-- TODO Selecteur id, css, xpath -->
+<!-- TODO Dev Tools (Inspecter) -->
 
 ---
 layout: center
@@ -823,7 +871,7 @@ The result of ${calculation} should be ${expected}
 ---
 
 ## Behavior Driven Development (BDD)
-### Given-When-Then
+### Syntaxe Given-When-Then
 
 ```text {7-|all}
 *** Test Cases ***
@@ -1034,7 +1082,6 @@ layout: center
 
 
 <!-- TODO Ajouter video d'intro -->
-<!-- TODO codelab Robot Flower Princess (Tester chez Nickel le docker pull) -->
 ---
 
 ## DataDriver
@@ -1118,8 +1165,6 @@ robot --dryrun tests
 
 # Ajoute le répertoire courant dans le PYTHON PATH
 robot --pythonpath . tests
-
-robot --loglevel TRACE . tests
 ```
 
 ---
@@ -1198,6 +1243,65 @@ layout: center
 
 </v-clicks>
 
+---
+
+## Logs
+### Niveaux
+
+<v-clicks>
+
+- 🟢 TRACE : niveau le plus fin (ex : détails requête HTTP)
+- 🟢 DEBUG : trace de debug
+- 🟢 INFO : par défaut
+- 🟠 WARN : avertissement erreur non bloquante
+- 🔴 ERROR : erreur bloquante (le test s'arrête)
+
+</v-clicks>
+
+---
+
+## Logs
+### Définir niveau
+
+<v-clicks>
+
+```bash
+# Augmente le niveau de logs à TRACE
+robot --loglevel TRACE . tests
+
+# Augmente le niveau à TRACE mais affiche par défaut en INFO
+robot -L TRACE:INFO . tests
+```
+
+<img src="/images/loglevel.png" class="m-auto" style="height: 40px">
+
+<!-- TODO Capture exemple logs TRACE Requests -->
+
+</v-clicks>
+
+---
+
+## Logs
+### Keyword Python
+
+```python
+from robot.api import logger
+
+def log_from_python():
+    logger.info("Hello From Python Keyword")
+```
+
+---
+
+## Correlation ID
+
+<v-clicks>
+
+- Remplir Header `X-Request-ID`
+- Pousser logs Robot dans Grafana
+- Suivre logs des tests et applicatifs
+
+</v-clicks>
 
 ---
 
@@ -1237,14 +1341,57 @@ layout: center
 
 ---
 
-## Variable d'env
+## Tuple
 
-<v-clicks>
+```
+*** Test Cases ***
+Teste Les Tuples
+    ${robots}=    Get Robots
+    Log    ${robots}
+    Log    ${robots[0]}
+    Log    ${robots[1]}
 
-- configuration YAML
-- `.env` avec `dotenv`
+*** Keywords ***
+Get Robots
+    RETURN    R2D2    C3PO
+```
 
-</v-clicks>
+
+---
+
+## Dataclass
+
+```python {1-4|all}
+@dataclass
+class ImmutableRobot:
+    name: str
+    color: str
+    
+# ${r2d2}=    Build Immutable Robot  R2D2  Bleue
+# Log  ${r2d2.color}
+def build_immutable_robot(name: str, color: str):
+    return ImmutableRobot(name, color)
+```
+
+---
+
+## List Comprehension
+
+```text
+*** Settings ***
+Library     resources/robot_helper.py
+
+
+*** Test Cases ***
+Teste List Comprehension
+    ${c3po}=    Build Immutable Robot    C3PO    Jaune
+    ${r2d2}=    Build Immutable Robot    R2D2    Bleue
+
+    ${robots}=    Create List    ${c3po}    ${r2d2}
+
+    # Utilisez $robots (pas ${robots}) dans les expressions Python
+    ${robots_jaunes}=    Evaluate    [r for r in $robots if r.color == "Jaune"]
+```
 
 ---
 
@@ -1262,7 +1409,7 @@ layout: center
 
 <v-clicks>
 
-- Robotidy : Robot
+- Robotidy OU **Robocop** : Robot
 - Black : Python
 - Pre Commit (avant chaque commit Git)
 
@@ -1277,6 +1424,8 @@ layout: center
 - alias
 - fzf
 - Listener
+
+<!-- TODO Slide Listener -->
 
 </v-clicks>
 
@@ -1339,8 +1488,7 @@ layout: center
 <v-clicks>
 
 - Chaque fichier robot est une suite
-- Le dossier exécuté est une suite
-- Tous les dossiers enfants sont des suites
+- Les dossier contenant les fichiers robot sont des suites
 - Stats par suite
 
 </v-clicks>
@@ -1350,8 +1498,8 @@ layout: center
 ## Tag
 
 - Les tests peuvent être taggués
-- Stats par tags
 - Options CLI `--include` / `--exclude` pour filtrer
+- Stats par tag
 
 ---
 
@@ -1361,16 +1509,38 @@ layout: center
 
 ---
 
-## loglevel
+## Remove Keywords
 
-- `--loglevel TRACE` est intéressant en local
+```bash
+# WUKS = Wait Until Keyword Succeeds
+robot --removekeywords PASSED --removekeywords WUKS tests/17-remove_keywords.robot
+```
+
+---
+
+## Remove Keywords
+
+<img src="/images/remove_keywords.png" class="m-auto" style="height: 400px"/>
+
+---
+
+## Flatten Keywords
+
+```bash
+robot --flattenkeywords ITERATION tests/18-flatten_keywords.robot
+```
+
+---
+
+## Flatten Keywords
+
+<img src="/images/flatten_keywords.png" class="m-auto" style="height: 400px"/>
 
 ---
 
 ## rebot
 
-- Filtre les rapports `output.xml`
-- Avec arguments `--flattenkeywords`, `--removekeywords`
+- Filtre les rapports de sortie
 
 ---
 
@@ -1416,8 +1586,6 @@ layout: center
 # Intégration continue 👾️
 
 <!-- TODO https://docs.robotframework.org/docs/using_rf_in_ci_systems/docker -->
-<!-- TODO https://docs.robotframework.org/docs/using_rf_in_ci_systems/ci -->
-<!-- TODO Démo sur Github Actions (projet robot-examples) -->
 
 ---
 
@@ -1451,8 +1619,10 @@ layout: center
 <v-clicks>
 
 - A chaque `push`
-- Ne pas lancer les tests
+- Installer env python 
+- OU charger image Docker (évite de réinstaller les dépendances)
 - Exécuter dry-run
+- 💡 Ne pas lancer les tests
 
 </v-clicks>
 
@@ -1463,6 +1633,9 @@ layout: center
 <v-clicks>
 
 - Chaque nuit
+- Installer env python
+- OU charger image Docker (évite de réinstaller les dépendances)
+- Lancer les tests
 - Publier les rapports HTML
 - Effectuer un diff avec jours passés
 - Notifier équipe
@@ -1471,8 +1644,16 @@ layout: center
 
 ---
 
+## Github Actions
+
+<img src="/images/ci_github_actions.png" class="m-auto" style="height: 400px">
+
+[CI Systems / GitHub Actions](https://docs.robotframework.org/docs/using_rf_in_ci_systems/ci/github-actions)
+
+---
+
 ## Lancement Tests
-### CI
+### Depuis la CI
 
 - 🟢 Standard
 - 🔴 Ouvertures de flux (https, bases, sftp...)
@@ -1488,7 +1669,7 @@ layout: center
 ---
 
 ## Lancement Tests
-### K8S / API
+### Depuis K8S avec API
 
 <img src="/images/k8s.png" class="m-auto" style="height: 300px">
 
