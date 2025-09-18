@@ -63,11 +63,12 @@ layout: center
 <v-clicks>
 
 - Généralités
-- Installer l'env de dev
 - Rappels Python
 - Comprendre le fonctionnement de Robot Framework
+- Installer l'env de dev
 - Découvrir la ligne de commande robot
-- Ecrire mes premiers tests (codelab)
+- Codelab Tests API
+- Codelab Tests UI avec Playwright
 
 </v-clicks>
 
@@ -462,7 +463,7 @@ Appel Keywords
 ## Keyword
 ### List (args) / Dict (kwargs)
 
-```text {1-6|1,8-12|all}
+```text {1-6|1-6,14-17|1,8-12,14-15,19-20|all}
 *** Keywords ***
 Keyword Avec Args
     [Arguments]    @{list}
@@ -561,7 +562,7 @@ graph TD
 
 ---
 
-## Section
+## Sections
 
 <v-clicks>
 
@@ -626,8 +627,12 @@ layout: center
 
 ## Quizz
 
-TODO Klaxoon ?
+[Lien ou passer à la slide suivante](https://forms.gle/KBcDj1j1GjBkdzM47)
 
+---
+layout: iframe
+url: https://forms.gle/KBcDj1j1GjBkdzM47
+---
 
 ---
 layout: center
@@ -1870,6 +1875,14 @@ mindmap
     RPA <br/> Automatisation
         Tasks
 ```
+
+---
+layout: center
+---
+
+## Codelab 💻
+
+[Jeu RPA](https://remi-picard.github.io/robot-codelab/robot-flower-princess/)
 
 ---
 layout: center
