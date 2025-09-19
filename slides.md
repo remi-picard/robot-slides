@@ -1184,6 +1184,8 @@ robot --dryrun tests
 robot --pythonpath . tests
 ```
 
+<!-- Lien vers documentation officielle -->
+
 ---
 
 ## PYTHON_PATH
@@ -1420,9 +1422,14 @@ Teste List Comprehension
 
 <v-clicks>
 
+- Guide
 - Keyword
 
-TODO Capture Tableau doc
+</v-clicks>
+
+<v-clicks>
+
+<img src="/images/doc_keyword.png" class="m-auto" style="height: 350px">
 
 </v-clicks>
 
@@ -1614,32 +1621,25 @@ layout: center
 
 # Intégration continue 👾️
 
-<!-- TODO https://docs.robotframework.org/docs/using_rf_in_ci_systems/docker -->
-
 ---
 
-## Robotdiff
+## Docker 🐳
 
 <v-clicks>
 
-<img src="/images/diff.png" class="m-auto" style="height: 250px">
+- Utiliser ou Builder une image Docker
 
-[Robotdiff](https://robotframework.org/robotframework/2.1.2/tools/robotdiff.html)
+- [Docker Images for Robot Framework](https://docs.robotframework.org/docs/using_rf_in_ci_systems/docker)
 
 </v-clicks>
 
 ---
 
-## Notifications
-### GChat / Slack
+## Github Actions
 
-<v-clicks>
+<img src="/images/ci_github_actions.png" class="m-auto" style="height: 400px">
 
-- Notifier **SI erreurs en +** par rapport à la veille
-
-<img src="/images/notif.png" class="m-auto" style="height: 200px">
-
-</v-clicks>
+[CI Systems / GitHub Actions](https://docs.robotframework.org/docs/using_rf_in_ci_systems/ci/github-actions)
 
 ---
 
@@ -1673,56 +1673,72 @@ layout: center
 
 ---
 
-## Github Actions
-
-<img src="/images/ci_github_actions.png" class="m-auto" style="height: 400px">
-
-[CI Systems / GitHub Actions](https://docs.robotframework.org/docs/using_rf_in_ci_systems/ci/github-actions)
-
----
-
-## Lancement Tests
-### Depuis la CI
+## Tests quotidiens
+### Lancement via CI
 
 <v-clicks>
 
 - 🟢 Standard
-- 🔴 Ouvertures de flux (https, bases, sftp...)
-- 🔴 Publier les reports
+- 🟠 Ouvertures de flux (https, bases, sftp...)
+- 🟠 Publier les reports
 - 🟠 https
 
 </v-clicks>
 
 ---
 
-## Lancement Tests
-### Depuis la CI / Reporting
+## Tests quotidiens
+### Outils de Reporting
 
 - [Allure](https://docs.robotframework.org/docs/reporting_test_results/allure)
+- [Report Portal](https://docs.robotframework.org/docs/reporting_test_results/report_portal)
 - [Grafana](https://docs.robotframework.org/docs/reporting_test_results/grafana)
-
-<!-- TODO https://docs.robotframework.org/docs/reporting_test_results/report_portal -->
-<!-- TODO https://docs.robotframework.org/docs/reporting_test_results/robot_framework_metrics -->
-<!-- TODO https://docs.robotframework.org/docs/reporting_test_results/robot_framework_dashboard -->
-<!-- TODO Développer un projet UI / Reporting pour Robot -->
+- [Robot Framework Metrics](https://docs.robotframework.org/docs/reporting_test_results/robot_framework_metrics)
+- [Robot Framework Dashboard](https://docs.robotframework.org/docs/reporting_test_results/robot_framework_dashboard)
 
 ---
 
-## Lancement Tests
-### Depuis K8S avec API
+## Tests quotidiens
+### Lancement via K8S / API
 
 <img src="/images/k8s.png" class="m-auto" style="height: 300px">
 
 ---
 
-## Lancement Tests
-### K8S / API
+## Tests quotidiens
+### Lancement via  K8S / API
 
 <v-clicks>
 
 - 🟢 File System Commun (input / output des apps, + report)
 - 🟢 Lancement unitaire
 - 🟢 http
+
+</v-clicks>
+
+---
+
+## Tests quotidiens
+### Robotdiff
+
+<v-clicks>
+
+<img src="/images/diff.png" class="m-auto" style="height: 250px">
+
+[Robotdiff](https://robotframework.org/robotframework/2.1.2/tools/robotdiff.html)
+
+</v-clicks>
+
+---
+
+## Tests quotidiens
+### Notifications (GChat / Slack)
+
+<v-clicks>
+
+- Notifier **SI erreurs en +** par rapport à la veille
+
+<img src="/images/notif.png" class="m-auto" style="height: 200px">
 
 </v-clicks>
 
