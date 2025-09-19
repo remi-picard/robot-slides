@@ -9,7 +9,7 @@ lineNumbers: true
 ---
 
 # Développer avec Robot Framework
-### 22-23 Septembre 2025
+### 23-24 Septembre 2025
 ##### Nickel NANTES
 ###### Rémi PICARD
 
@@ -57,16 +57,24 @@ layout: center
 ## Découverte de Robot Framework
 
 ---
+layout: center
+---
 
-## Découverte de Robot Framework
+## Robot Framework => "Robot"
+### RF / RBF / RBT
+
+---
+
+## Plan
 
 <v-clicks>
 
 - Généralités
 - Rappels Python
-- Comprendre le fonctionnement de Robot Framework
+- Comprendre le fonctionnement de Robot
 - Installer l'env de dev
-- Découvrir la ligne de commande robot
+- Apprendre le langage Robot
+- Découvrir la ligne de commande `robot
 - Codelab Tests API
 - Codelab Tests UI avec Playwright
 
@@ -86,13 +94,6 @@ layout: center
 - Extensible via des librairies Python
 
 </v-clicks>
-
----
-layout: center
----
-
-## Robot Framework => "Robot"
-### RF / RBF / RBT
 
 ---
 
@@ -463,7 +464,7 @@ Appel Keywords
 ## Keyword
 ### List (args) / Dict (kwargs)
 
-```text {1-6|1-6,14-17|1,8-12,14-15,19-20|all}
+```text {1-6|1-6,14-17|1,8-12|1,8-12,14-15,19-20|all}
 *** Keywords ***
 Keyword Avec Args
     [Arguments]    @{list}
@@ -638,7 +639,7 @@ url: https://forms.gle/KBcDj1j1GjBkdzM47
 layout: center
 ---
 
-## Codelab 💻
+## TP Keyword 💻
 
 Tester les syntaxes
 
@@ -774,7 +775,18 @@ layout: center
 
 <img src="/images/browser.png" class="m-auto" style="height: 600px">
 
-<!-- TODO Selecteur id, css, xpath -->
+---
+
+## Sélecteurs
+
+<v-clicks>
+
+- ID
+- CSS
+- XPATH
+
+</v-clicks>
+
 <!-- TODO Dev Tools (Inspecter) -->
 
 ---
@@ -794,7 +806,7 @@ layout: center
 
 ---
 
-## Bonnes pratiques Robot Framework
+## Plan
 
 <v-clicks>
 
@@ -1059,9 +1071,12 @@ CONSTANTE;Ligne 2
 layout: center
 ---
 
-## Codelab 💻 Fichiers
+## TP Fichiers 💻
 
-<!-- TODO codelab Fichier -->
+- Créer et remplir un fichier
+- Récupérer le fichier
+- Déplacer le fichier
+- Supprimer le fichier
 
 ---
 layout: center
@@ -1084,9 +1099,6 @@ layout: center
 
 </v-clicks>
 
-
-
-<!-- TODO Ajouter video d'intro -->
 ---
 
 ## DataDriver
@@ -1244,7 +1256,11 @@ layout: center
 
 <v-clicks>
 
-- 
+- Passer en argument un Keyword à un Keyword
+- Equivalent à passer une lambda ou un callback à une méthode Python 🐍
+- `Run Keyword`
+- `Run Keyword If`
+- `Wait Until Keyword Succeeds`
 
 </v-clicks>
 
@@ -1406,6 +1422,8 @@ Teste List Comprehension
 
 - Keyword
 
+TODO Capture Tableau doc
+
 </v-clicks>
 
 ---
@@ -1414,9 +1432,10 @@ Teste List Comprehension
 
 <v-clicks>
 
-- Robotidy OU **Robocop** : Robot
-- Black : Python
+- Robotidy OU **Robocop** : Robot 🤖
+- Black : Python 🐍
 - Pre Commit (avant chaque commit Git)
+- Vérification sur l'intégration continue
 
 </v-clicks>
 
@@ -1426,13 +1445,13 @@ Teste List Comprehension
 
 <v-clicks>
 
-- alias
+- alias vers robot`
 - fzf
 - Listener
 
-<!-- TODO Slide Listener -->
-
 </v-clicks>
+
+<!-- TODO Slide Listener -->
 
 ---
 
@@ -1442,6 +1461,7 @@ Teste List Comprehension
 
 - Pas de `Sleep` (attente fixe fragile et qui ralentit les tests)
 - Utiliser boucle d'attente `Wait Until Keyword Succeeds`
+- Utiliser `[Timeout]` sur Keyword
 - Utiliser les bons outils (`Playwright` attend par design)
 
 </v-clicks>
@@ -1475,10 +1495,14 @@ layout: center
 
 ## Gérer les erreurs
 
+<v-clicks>
+
 - Tenter des retry avec `Wait Until Keyword Succeeds`
 - Gérer les erreurs avec [TRY/EXCEPT](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#try-except-syntax)
 - `Fail` un test si nécessaire
 - `Log`
+
+</v-clicks>
 
 ---
 layout: center
@@ -1493,7 +1517,7 @@ layout: center
 <v-clicks>
 
 - Chaque fichier robot est une suite
-- Les dossier contenant les fichiers robot sont des suites
+- Les dossiers contenant les fichiers robot sont des suites
 - Stats par suite
 
 </v-clicks>
@@ -1660,16 +1684,27 @@ layout: center
 ## Lancement Tests
 ### Depuis la CI
 
+<v-clicks>
+
 - 🟢 Standard
 - 🔴 Ouvertures de flux (https, bases, sftp...)
 - 🔴 Publier les reports
 - 🟠 https
 
+</v-clicks>
+
+---
+
+## Lancement Tests
+### Depuis la CI / Reporting
+
+- [Allure](https://docs.robotframework.org/docs/reporting_test_results/allure)
+- [Grafana](https://docs.robotframework.org/docs/reporting_test_results/grafana)
+
 <!-- TODO https://docs.robotframework.org/docs/reporting_test_results/report_portal -->
-<!-- TODO https://docs.robotframework.org/docs/reporting_test_results/allure -->
-<!-- TODO https://docs.robotframework.org/docs/reporting_test_results/grafana -->
 <!-- TODO https://docs.robotframework.org/docs/reporting_test_results/robot_framework_metrics -->
 <!-- TODO https://docs.robotframework.org/docs/reporting_test_results/robot_framework_dashboard -->
+<!-- TODO Développer un projet UI / Reporting pour Robot -->
 
 ---
 
@@ -1683,34 +1718,19 @@ layout: center
 ## Lancement Tests
 ### K8S / API
 
+<v-clicks>
+
 - 🟢 File System Commun (input / output des apps, + report)
 - 🟢 Lancement unitaire
 - 🟢 http
+
+</v-clicks>
 
 ---
 layout: center
 ---
 
 # Autres Usages 👩🏻‍💻
-
----
-
-## Robotic Process Automation (RPA)
-
-> Robotic Process Automation (RPA) **is similar to test automation on the technical level**,
-> but the mentality is different on the business and results side.
-> In RPA, it is pretty standard that you are not running on a machine you control entirely,
-> so your robot needs to be "self-sufficient" and isolated.
-> Also, instead of finding and documenting places where robot execution fails or succeeds,
-> **the aim is always to succeed and get the result of the process**.
-
-<v-clicks>
-
-- `*** Test Cases ***` => `*** Tasks ***`
-- [Librairies RPA (Desktop, Cloud, Scrapping...)](https://github.com/robocorp/rpaframework/?tab=readme-ov-file#libraries)
-
-</v-clicks>
-
 
 ---
 
@@ -1753,6 +1773,33 @@ layout: center
 - libdoc
 
 </v-clicks>
+
+---
+
+## Robotic Process Automation (RPA)
+
+> Robotic Process Automation (RPA) **is similar to test automation on the technical level**,
+> but the mentality is different on the business and results side.
+> In RPA, it is pretty standard that you are not running on a machine you control entirely,
+> so your robot needs to be "self-sufficient" and isolated.
+> Also, instead of finding and documenting places where robot execution fails or succeeds,
+> **the aim is always to succeed and get the result of the process**.
+
+<v-clicks>
+
+- `*** Test Cases ***` => `*** Tasks ***`
+- [Librairies RPA (Desktop, Cloud, Scrapping...)](https://github.com/robocorp/rpaframework/?tab=readme-ov-file#libraries)
+
+</v-clicks>
+
+---
+layout: center
+---
+
+## Codelab 💻
+
+[Jeu RPA](https://remi-picard.github.io/robot-codelab/robot-flower-princess/)
+
 
 ---
 layout: center
@@ -1880,17 +1927,7 @@ mindmap
 layout: center
 ---
 
-## Codelab 💻
-
-[Jeu RPA](https://remi-picard.github.io/robot-codelab/robot-flower-princess/)
-
----
-layout: center
----
-
 # Rétro 🛋️
-
-TODO Klaxoon ?
 
 ---
 layout: center
@@ -1900,7 +1937,7 @@ layout: center
 
 <v-clicks>
 
-- Merci pour votre attention.
+- Merci pour votre attention. 🙏
 - Bonne chance pour l'automatisation de vos tests !
 - Amusez-vous bien !
 
