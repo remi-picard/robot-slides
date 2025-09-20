@@ -781,13 +781,24 @@ layout: center
 
 <v-clicks>
 
-- ID
-- CSS
+- CSS (id, class)
 - XPATH
 
 </v-clicks>
 
-<!-- TODO Dev Tools (Inspecter) -->
+---
+
+## Selecteurs
+### DevTools
+
+<img src="/images/devtools.png" class="m-auto" style="height: 350px"/>
+
+---
+
+## Selecteurs
+### DevTools
+
+<img src="/images/devtools2.png" class="m-auto" style="height: 350px"/>
 
 ---
 layout: center
@@ -1230,10 +1241,49 @@ Tester Ma Lib
 
 <v-clicks>
 
-- réflexion Tests / Keywords (métadonnées, hooks)
-- parsing des résultats en Python
+- Lancement `robot`
+- Réflexion Tests / Keywords (métadonnées, hooks)
+- Parsing des résultats en Python
 
 </v-clicks>
+
+---
+
+## API Python
+
+```python
+import robot
+
+def run_tests():
+  robot.run("robot", outputdir="data")
+```
+
+---
+
+## Pattern Visitor
+
+```python {1-9|all}
+from robot.running import TestSuiteBuilder
+from robot.model import SuiteVisitor
+
+class TagsOnTestCasesFinder(SuiteVisitor):
+    def __init__(self):
+        self.tests = list()
+
+    def visit_test(self, test):
+        self.tests.append(test.name)
+
+def list_tests():
+    builder = TestSuiteBuilder()
+    testsuite = builder.build("tests/")
+    finder = TagsOnTestCasesFinder()
+    testsuite.visit(finder)
+    for test in sorted(finder.tests):
+        print(test)
+
+if __name__ == "__main__":
+    list_tests()
+```
 
 ---
 
@@ -1241,8 +1291,35 @@ Tester Ma Lib
 
 <v-clicks>
 
+- Mécanisme d'envoi de notifications
+- Inspection / Modification de données
+- Lors de l'exécution d'un test
+- Lors de l'exécution d'un keyword
+- Lors de l'écriture des rapports
 - `--listener`
-- API Python 🔗
+- [Documentation Listener](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#listener-interface)
+
+</v-clicks>
+
+---
+
+## Listener
+### Exemple
+
+<v-clicks>
+
+```python
+"""Listener that stops execution if a test fails."""
+
+ROBOT_LISTENER_API_VERSION = 2
+
+def end_test(name, attrs):
+    if attrs['status'] == 'FAIL':
+        print(f"Test '{name}'" failed: {attrs['message']}")
+        input("Press enter to continue.")
+```
+
+`robot --listener path/to/PauseExecution.py tests.robot`
 
 </v-clicks>
 
@@ -1298,7 +1375,7 @@ robot -L TRACE:INFO . tests
 
 <img src="/images/loglevel.png" class="m-auto" style="height: 40px">
 
-<!-- TODO Capture exemple logs TRACE Requests -->
+<img src="/images/loglevel_trace_requests.png" class="m-auto">
 
 </v-clicks>
 
@@ -1454,11 +1531,9 @@ Teste List Comprehension
 
 - alias vers robot`
 - fzf
-- Listener
+- Visitor
 
 </v-clicks>
-
-<!-- TODO Slide Listener -->
 
 ---
 
@@ -1468,7 +1543,8 @@ Teste List Comprehension
 
 - Pas de `Sleep` (attente fixe fragile et qui ralentit les tests)
 - Utiliser boucle d'attente `Wait Until Keyword Succeeds`
-- Utiliser `[Timeout]` sur Keyword
+- Utiliser `[Timeout]` sur Keyword / Test
+- [Documentation Timeout](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#user-keyword-timeout)
 - Utiliser les bons outils (`Playwright` attend par design)
 
 </v-clicks>
@@ -1785,10 +1861,23 @@ layout: center
 
 <v-clicks>
 
-- libtoc
-- libdoc
+- `libdoc` : documentation Keywords
+- `libtoc` : Sidebar Keywords
+- `testdoc` : documentation tests
 
 </v-clicks>
+
+---
+
+## libdoc + libtoc
+
+<img src="/images/libdoc.png" class="m-auto" style="height: 350px"/>
+
+---
+
+## testdoc
+
+<img src="/images/testdoc.png" class="m-auto" style="height: 350px"/>
 
 ---
 
@@ -1816,6 +1905,48 @@ layout: center
 
 [Jeu RPA](https://remi-picard.github.io/robot-codelab/robot-flower-princess/)
 
+---
+layout: center
+---
+
+# IA 🤖
+
+---
+
+## IA
+### Avantages
+
+<v-clicks>
+
+- Apprendre
+- Prototyper
+- Résoudre problématique spécifique
+
+</v-clicks>
+
+---
+
+## IA
+### Avertissements
+
+<v-clicks>
+
+- Prendre du recul
+- Perte de contrôle
+- Empreinte écologique
+
+</v-clicks>
+
+---
+
+## Démo Génération de code
+
+<v-clicks>
+
+- Claude AI (Web)
+- Gemini (CLI)
+
+</v-clicks>
 
 ---
 layout: center
