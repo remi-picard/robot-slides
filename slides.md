@@ -1529,11 +1529,18 @@ Teste List Comprehension
 
 <v-clicks>
 
-- alias vers robot`
-- fzf
-- Visitor
+- fzf (fuzzy finder)
+- Pattern Visitor
 
 </v-clicks>
+
+---
+
+## Terminal interactif
+
+<video class="mt-3 m-auto" controls width="600">
+  <source src="/images/interactive_terminal.mov" />
+</video>
 
 ---
 
