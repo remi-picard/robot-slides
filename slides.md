@@ -74,7 +74,7 @@ layout: center
 - Comprendre le fonctionnement de Robot
 - Installer l'env de dev
 - Apprendre le langage Robot
-- Découvrir la ligne de commande `robot
+- Découvrir la ligne de commande `robot`
 - Codelab Tests API
 - Codelab Tests UI avec Playwright
 
@@ -536,7 +536,10 @@ Mon Deuxième Keyword
 ## Keyword
 ### Syntaxe Python
 
-```python {1-3|5-8}
+<v-clicks>
+
+```python {1-4|6-9}
+# mon_keyword.py
 # Mon Premier Keyword
 def mon_premier_keyword():
     print("Hello World")
@@ -546,6 +549,18 @@ def mon_premier_keyword_avec_argument_et_return(name) -> int:
     print(name)
     return 42
 ```
+
+```
+*** Settings ***
+Library    mon_keyword.py
+
+*** Test Cases ***
+Mon Test
+    Mon Premier Keyword
+    ${retour}=    Mon Premier Keyword Avec Argument Et Return    R2D2
+```
+
+</v-clicks>
 
 ---
 
