@@ -13,6 +13,10 @@ lineNumbers: true
 ##### Nickel NANTES
 ###### Rémi PICARD
 
+<br/>
+
+###### Appuyer sur la barre d'ESPACE ou les flèches pour démarrer
+
 ---
 
 ## Tour de table
@@ -319,10 +323,14 @@ Teste Variables
 ## Variables
 ### Déclaration
 
-```text
+```text{1-4|1,6-8|all}
 *** Test Cases ***
 Creation Variable
     ${ma_variable}    Set Variable    C3PO
+    Log    ma_variable=${ma_variable}
+
+    # Nouvelle syntaxe RF>=7.0
+    VAR    ${ma_variable}    C3PO
     Log    ma_variable=${ma_variable}
 ```
 
@@ -333,13 +341,23 @@ Creation Variable
 
 <v-clicks>
 
-- Local `Set Variable`
-- Test `Set Test Variable`
-- Suite `Set Suite Variable`
-- Global `Set Global Variable`
+- Local `${hi} =    Set Variable    Hello`
+- Test `Set Test Variable  ${HI}  Hello`
+- Suite `Set Suite Variable  ${HI}  Hello`
+- Global `Set Global Variable  ${HI}  Hello`
 - 💡Limiter au maximum la portée
+- Nouvelle syntaxe (uniforme) : `VAR    ${variable}    scope=SUITE`
 
 </v-clicks>
+
+---
+
+## Variables
+### Syntaxe VAR
+
+> It is recommended to use the VAR syntax introduced in Robot Framework 7.0 for creating variables in different scopes instead of the Set Global/Suite/Test/Local Variable keywords.
+
+[BuiltIn](https://robotframework.org/robotframework/latest/libraries/BuiltIn.html#Set%20Variable)
 
 ---
 
@@ -753,13 +771,16 @@ layout: center
 
 ## Browser Library
 
-```bash {1|3|5-6|8-9|all}
+```bash {1|3|5-6|8-9|11-13|all}
 # Installer Node https://nodejs.org/en/download/
 
 pip install robotframework-browser
 
 # Télécharge le navigateur
 rfbrowser init
+
+# Télécharge le navigateur Firefox
+rfbrowser init firefox
 ```
 
 ---
@@ -792,28 +813,57 @@ layout: center
 
 ---
 
+## Browser Library
+### Ralentir le navigateur
+
+```
+Ralentir Browser
+    # Remplacer `Open Browser` par `New Browser`
+    New Browser    browser=firefox    headless=${False}    slowMo=1 second
+```
+
+---
+
 ## Sélecteurs
 
 <v-clicks>
 
-- CSS (id, class)
-- XPATH
+- CSS (type selector => `input`, `div`...)
+- CSS (id selector => `#todo-input`)
+- CSS (class selector => `.todo-list`)
+- [CSS Selector Reference](https://www.w3schools.com/cssref/css_selectors.php)
+- [CSS Selector Tester](https://www.w3schools.com/cssref/trysel.php)
+- XPATH (`//*[@id="todo-input"])
+- [XPath Syntax](https://www.w3schools.com/xml/xpath_syntax.asp)
 
 </v-clicks>
 
 ---
 
 ## Selecteurs
-### DevTools
+### DevTools Elements
 
 <img src="/images/devtools.png" class="m-auto" style="height: 350px"/>
 
 ---
 
 ## Selecteurs
-### DevTools
+### DevTools Elements
 
 <img src="/images/devtools2.png" class="m-auto" style="height: 350px"/>
+
+---
+
+## Selecteurs
+### DevTools Console
+
+<v-clicks>
+
+- `$$` ou `document.querySelectorAll` pour tester les sélecteurs
+
+<img src="/images/devtools3.png" class="m-auto" style="height: 350px"/>
+
+</v-clicks>
 
 ---
 layout: center
@@ -1531,7 +1581,7 @@ Teste List Comprehension
 
 <v-clicks>
 
-- Robotidy OU **Robocop** : Robot 🤖
+- **Robocop** : Robot 🤖
 - Black : Python 🐍
 - Pre Commit (avant chaque commit Git)
 - Vérification sur l'intégration continue
