@@ -224,6 +224,7 @@ layout: center
 [Documentation](https://docs.python.org/fr/3.13/library/stdtypes.html)
 
 </v-clicks>
+
 ---
 
 ## Méthodes
@@ -278,7 +279,6 @@ Mon Premier Test
 ```
 
 ---
-
 
 ## Variables
 
@@ -374,6 +374,18 @@ Creation Variable
 ---
 
 ## Variables
+### Option CLI
+
+<v-clicks>
+
+- option `--variable` / `-v`
+- `robot --variable env:LOCAL tests/14-variable.robot`
+
+</v-clicks>
+
+---
+
+## Variables
 ### Import Python
 
 ```python
@@ -402,8 +414,6 @@ Utiliser Variable Python
 ### ENV
 
 - Syntaxe `%{VARIABLE_ENV=default_value}`
-
-<!-- Before / After -->
 
 ---
 
@@ -483,6 +493,7 @@ Appel Keywords
 ### List (args) / Dict (kwargs)
 
 ```text {1-6|1-6,14-17|1,8-12|1,8-12,14-15,19-20|all}
+```text {1-6|1-6,14-18|1,8-12|1,8-12,14-15,20-23|all}
 *** Keywords ***
 Keyword Avec Args
     [Arguments]    @{list}
@@ -499,9 +510,13 @@ Keyword Avec Kwargs
 *** Test Cases ***
 Appel Keywords
     ${list}    Create List    1    2    3
+    # ${list}    Create List    1    2    3
+    VAR    @{list}    1    2    3
     Keyword Avec Args    ${list}
 
     ${map}    Create Dictionary    cle1=valeur1    cle2=valeur2
+    # ${map}    Create Dictionary    cle1=valeur1    cle2=valeur2
+    VAR    &{map}    cle1=valeur1    cle2=valeur2
     Keyword Avec Kwargs    &{map}
 ```
 
@@ -963,6 +978,19 @@ The result of ${calculation} should be ${expected}
 
 ---
 
+## Test
+### Before / After
+
+<v-clicks>
+
+- `Test Setup`
+- `Test Teardown`
+- [Test setup and teardown](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#test-setup-and-teardown)
+
+</v-clicks>
+
+---
+
 ## Behavior Driven Development (BDD)
 ### Syntaxe Given-When-Then
 
@@ -1260,7 +1288,7 @@ robot --dryrun tests
 robot --pythonpath . tests
 ```
 
-<!-- Lien vers documentation officielle -->
+[Options](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#using-command-line-options)
 
 ---
 
@@ -1302,6 +1330,27 @@ Tester Ma Lib
 
 ---
 
+## Ligne de commande `robocop`
+
+<v-clicks>
+
+- `robocop check` (Linter)
+
+```text
+tests/22-failed-test.robot:8:5 ERR13 Invalid IF syntax: IF must have closing END
+   |
+ 6 |
+ 7 | Test Lint En Erreur
+ 8 |     IF
+   |     ^^ ERR13
+ 9 |         Log  IF
+   |
+```
+
+</v-clicks>
+
+---
+
 ## API Python
 
 <v-clicks>
@@ -1320,7 +1369,7 @@ Tester Ma Lib
 import robot
 
 def run_tests():
-  robot.run("robot", outputdir="data")
+  robot.run("tests", outputdir="data", loglevel="TRACE")
 ```
 
 ---
@@ -1375,16 +1424,17 @@ if __name__ == "__main__":
 
 ```python
 """Listener that stops execution if a test fails."""
+from robot.api import logger
 
 ROBOT_LISTENER_API_VERSION = 2
 
 def end_test(name, attrs):
-    if attrs['status'] == 'FAIL':
-        print(f"Test '{name}'" failed: {attrs['message']}")
+    if attrs["status"] == "FAIL":
+        logger.warn(f"Test '{name}' failed: {attrs['message']}")
         input("Press enter to continue.")
 ```
 
-`robot --listener path/to/PauseExecution.py tests.robot`
+`robot --listener resources/pause_listener.py tests/22-failed-test.robot`
 
 </v-clicks>
 
@@ -1508,19 +1558,21 @@ def log_from_python():
 
 ## Tuple
 
-```
+```text{10-|all}
 *** Test Cases ***
 Teste Les Tuples
     ${robots}=    Get Robots
     Log    ${robots}
+    ${robots_type}=    Evaluate    type($robots)
+    Log    ${robots_type}
     Log    ${robots[0]}
     Log    ${robots[1]}
 
 *** Keywords ***
 Get Robots
-    RETURN    R2D2    C3PO
+    ${robots}=    Evaluate    ("R2D2", "C3PO")
+    RETURN    ${robots}
 ```
-
 
 ---
 
@@ -1581,7 +1633,7 @@ Teste List Comprehension
 
 <v-clicks>
 
-- **Robocop** : Robot 🤖
+- Robocop : Robot 🤖
 - Black : Python 🐍
 - Pre Commit (avant chaque commit Git)
 - Vérification sur l'intégration continue
@@ -1655,7 +1707,7 @@ layout: center
 - Tenter des retry avec `Wait Until Keyword Succeeds`
 - Gérer les erreurs avec [TRY/EXCEPT](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#try-except-syntax)
 - `Fail` un test si nécessaire
-- `Log`
+- `Log` (WARN / ERROR)
 
 </v-clicks>
 
