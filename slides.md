@@ -848,7 +848,7 @@ Ralentir Browser
 - CSS (class selector => `.todo-list`)
 - [CSS Selector Reference](https://www.w3schools.com/cssref/css_selectors.php)
 - [CSS Selector Tester](https://www.w3schools.com/cssref/trysel.php)
-- XPATH (`//*[@id="todo-input"])
+- XPATH (`//*[@id="todo-input"]`)
 - [XPath Syntax](https://www.w3schools.com/xml/xpath_syntax.asp)
 
 </v-clicks>
@@ -2118,7 +2118,7 @@ mindmap
             *.robot
         *.robot
     resources/
-        *.resources
+        *.resource
         *.py
     requirements.txt
 ```
