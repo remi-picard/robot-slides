@@ -492,7 +492,6 @@ Appel Keywords
 ## Keyword
 ### List (args) / Dict (kwargs)
 
-```text {1-6|1-6,14-17|1,8-12|1,8-12,14-15,19-20|all}
 ```text {1-6|1-6,14-18|1,8-12|1,8-12,14-15,20-23|all}
 *** Keywords ***
 Keyword Avec Args
@@ -509,12 +508,10 @@ Keyword Avec Kwargs
 
 *** Test Cases ***
 Appel Keywords
-    ${list}    Create List    1    2    3
     # ${list}    Create List    1    2    3
     VAR    @{list}    1    2    3
     Keyword Avec Args    ${list}
 
-    ${map}    Create Dictionary    cle1=valeur1    cle2=valeur2
     # ${map}    Create Dictionary    cle1=valeur1    cle2=valeur2
     VAR    &{map}    cle1=valeur1    cle2=valeur2
     Keyword Avec Kwargs    &{map}
